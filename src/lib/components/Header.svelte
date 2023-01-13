@@ -36,6 +36,7 @@
 <Drawer width="w-1/2">
 	<!-- Insert the list: -->
 	<nav class="list-nav h-full p-4">
+    <img src="/logo.svg" class="w-full" />
 		<ul class="flex flex-col h-full gap-2">
 			<li><a href="/" on:click={drawerStore.close}>Home</a></li>
 			<li><a href="/entries" on:click={drawerStore.close}>Entries</a></li>
