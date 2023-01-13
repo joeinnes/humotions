@@ -2,10 +2,13 @@
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.css';
-	import { AppShell, Toast } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+
+	import { AppShell, Toast } from '@skeletonlabs/skeleton';
+
+	import dayjs from 'dayjs';
 	import { pb } from '$lib/db/db';
 	import { pageBgColour } from '$lib/stores/colour';
 	import { user, entries } from '$lib/stores/data';
@@ -24,21 +27,32 @@
 					expand: 'emotions,emotions.parent_emotion,emotions.parent_emotion.parent_emotion'
 				});
 
-				pb.collection('entries').subscribe('*', e => {
-					switch (e) {
+				pb.collection('entries').subscribe('*', async (e) => {
+					switch (e.action) {
 						case 'create':
-							$entries = [...$entries, e.record].sort(a, b => a.created < b.created);
+							const newEntry = await pb.collection('entries').getOne(e.record.id, {
+								expand: 'emotions,emotions.parent_emotion,emotions.parent_emotion.parent_emotion'
+							});
+							$entries = [...$entries, newEntry].sort((a, b) =>
+								dayjs(a.created) < dayjs(b.created) ? 1 : -1
+							);
 							break;
 						case 'update':
 							const newEntries = [...$entries];
-							entries.find(el => el.id === e.record.id);
+							$entries = $entries.map((el) => {
+								if (el.id === e.record.id) {
+									return e.record;
+								}
+								return el;
+							});
 							break;
 						case 'delete':
-
-						default: 
+							$entries = $entries.filter((el) => el.id !== e.record.id);
+							break;
+						default:
 							console.error(e);
 					}
-				})
+				});
 			}
 		} catch (e) {
 			console.error(e);

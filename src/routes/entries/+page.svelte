@@ -15,7 +15,7 @@
 			}, 5000);
 			const entriesCache = [...$entries];
 			$entries = $entries.filter((el) => el.id !== entry.id);
-			await toastStore.trigger({
+			toastStore.trigger({
 				message: 'Entry deleted',
 				preset: 'error',
 				duration: '5000',
@@ -27,8 +27,6 @@
 					}
 				}
 			});
-			invalidateAll();
-			goto('/');
 		} catch (e) {
 			console.error(e);
 		}

@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { entries, emotions } from '$lib/stores/data';
 	import { goto, invalidateAll } from '$app/navigation';
+	import chroma from 'chroma-js';
+	import { toastStore } from '@skeletonlabs/skeleton';
+
+	import { entries, emotions } from '$lib/stores/data';
 	import { getHue } from '$lib/utils/utils';
 	import { pb } from '$lib/db/db';
-	import chroma from 'chroma-js';
 
 	let selectedEmotions = [];
 	let notes = '';
@@ -25,8 +27,11 @@
 			emotions: selectedEmotions.map((el) => el.id)
 		};
 		const record = await pb.collection('entries').create(data);
-		$entries = [record, ...$entries];
-		invalidateAll();
+		toastStore.trigger({
+			message: 'Entry created',
+			preset: 'success',
+			duration: '5000'
+		});
 		goto('/');
 	};
 

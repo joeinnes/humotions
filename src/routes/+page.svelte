@@ -17,7 +17,7 @@
 		goto('/');
 	}
 
-	let todaysEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'day'));
+	let todaysEntries = [];
 
 	const deleteEntry = async (entry) => {
 		try {
@@ -46,6 +46,10 @@
 			console.error(e);
 		}
 	};
+
+	$: {
+		todaysEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'day'));
+	}
 </script>
 
 <main class="w-full flex flex-col gap-2">

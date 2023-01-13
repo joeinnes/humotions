@@ -7,10 +7,13 @@
 
 	let todaysColour;
 	let todaysColourName: string;
-	let todaysEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'day'));
-	if (todaysEntries.length) {
-		todaysColour = getColourFromEntryList(todaysEntries);
-		todaysColourName = ntc.name(todaysColour.hex());
+	let todaysEntries = [];
+	$: {
+		todaysEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'day'));
+		if (todaysEntries.length) {
+			todaysColour = getColourFromEntryList(todaysEntries);
+			todaysColourName = ntc.name(todaysColour.hex());
+		}
 	}
 </script>
 
