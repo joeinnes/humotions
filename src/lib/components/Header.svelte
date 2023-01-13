@@ -35,7 +35,7 @@
 	});
 </script>
 
-<Drawer width="w-1/2">
+<Drawer width="w-5/6 md:w-1/2">
 	<nav class="list-nav h-full p-4">
 		<ul class="flex flex-col h-full gap-2">
       <img src="/logo.svg" class="w-full" />
@@ -65,7 +65,8 @@
 			</li>
 			<div class="flex-1" />
 			<li>
-				<button
+				<a href="/"
+					rel="external"
 					on:click={() => {
 						pb.authStore.clear();
 						drawerStore.close();
@@ -88,7 +89,7 @@
 								d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
 							/>
 						</svg>
-					</span><span>Log Out</span></button
+					</span><span>Log Out</span></a
 				>
 			</li>
 		</ul>
