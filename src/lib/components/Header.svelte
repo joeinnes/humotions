@@ -12,7 +12,9 @@
 	let hueList = [];
 	let showMenu = false;
 	onMount(async () => {
-		avatar = await pb.getFileUrl($user, $user.avatar, { thumb: '100x250' });
+    if ($user.avatar) {
+		  avatar = await pb.getFileUrl($user, $user.avatar, { thumb: '100x250' });
+    }
 		if (!$entries.length) {
 			$entries = await pb.collection('entries').getFullList(200, {
 				sort: '-created',
@@ -29,15 +31,14 @@
 		});
 
 		hueList = hues;
-		$userAllTime = chroma.average(hues);
+		$userAllTime = chroma.average(hues.length ? hues : [chroma('#ffffff')]);
 	});
 </script>
 
 <Drawer width="w-1/2">
-	<!-- Insert the list: -->
 	<nav class="list-nav h-full p-4">
-    <img src="/logo.svg" class="w-full" />
 		<ul class="flex flex-col h-full gap-2">
+      <img src="/logo.svg" class="w-full" />
 			<li><a href="/" on:click={drawerStore.close}>Home</a></li>
 			<li><a href="/entries" on:click={drawerStore.close}>Entries</a></li>
 			<li><a href="/about" on:click={drawerStore.close}>About</a></li>
@@ -68,6 +69,7 @@
 					on:click={() => {
 						pb.authStore.clear();
 						drawerStore.close();
+            $user = null;
 						goto('/');
 					}}
 					class="btn btn-filled-error"
@@ -126,7 +128,11 @@
 		</button>
 	</div>
 	<div class="relative">
-		<Avatar src={avatar} alt="Avatar for {user.name}" border="border-4" width="w-36" />
+    {#if avatar}
+		<Avatar src={avatar} alt="Avatar for {$user.name}" border="border-4" width="w-36" />
+    {:else}
+    <Avatar initials={$user.name ? $user.name.substring(0,2) : $user.username.substring(0,2)} alt="Avatar for {$user.name}" border="border-4" width="w-36" />
+    {/if}
 	</div>
 </header>
 

@@ -38,5 +38,15 @@
 		{#each $entries as entry (entry.id)}
 			<Entry {entry} del={deleteEntry} />
 		{/each}
+    {:else}
+    <div class="card card-surface-50 p-4">
+      <header class="card-header mb-4">No entries.</header>
+      <footer class="card-footer">
+      			<a href="/entries/new" class="btn btn-filled-primary btn-base"
+				><span>+</span><span>Add a new entry</span></a
+			>
+      </footer>
+    </div>
 	{/if}
+  
 </section>

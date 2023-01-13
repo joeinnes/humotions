@@ -27,14 +27,15 @@
 	on:submit|preventDefault={submitHandler}
 	class="shadow-lg p-8 max-w-prose w-full bg-white rounded-xl mx-auto mt-8"
 >
+  <img src="/logo.svg" />
 	<h1 class="text-2xl mb-2 font-bold">Log In</h1>
 	<label class="block mb-4">
-		Email or username<br />
+		<span>Email or username</span><br />
 		<input type="text" bind:value={email} class="border rounded p-2 w-full" />
 	</label>
 
 	<label class="block mb-4">
-		Password<br />
+		<span>Password</span><br />
 		<input type="password" bind:value={password} class="border rounded p-2 w-full" />
 	</label>
 

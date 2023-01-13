@@ -79,7 +79,7 @@
 	</div>
 	<label>
 		<h2 class="block">Notes</h2>
-		<textarea bind:value={notes} class="w-full border rounded h-48 focus:outline-none p-2" />
+		<textarea bind:value={notes} class="w-full border rounded h-48 focus:outline-none p-2 bg-surface-50" />
 	</label>
 	<button
 		on:click={addEntry}

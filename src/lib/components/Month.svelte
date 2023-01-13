@@ -1,18 +1,22 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
+  import chroma from 'chroma-js';
 	import { ntc } from '@cosmicice/namethatcolor';
 	import { entries } from '$lib/stores/data';
 	import { getColourFromEntryList, getEntryColour, setBackgroundGradient } from '$lib/utils/utils';
 
 	export let month = dayjs().startOf('month');
 	const endOfMonth = dayjs().endOf('month');
-	let monthColour;
-	let monthColourName: string;
+	let monthColourName;
+  let monthColour;
 	let thisMonthEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'month'));
 	if (thisMonthEntries.length) {
 		monthColour = getColourFromEntryList(thisMonthEntries);
 		monthColourName = ntc.name(monthColour.hex());
-	}
+	} else {
+    monthColour = chroma('#ffffff');
+		monthColourName = ntc.name(monthColour.hex());
+  }
 	const dailyColours = thisMonthEntries.reduce((acc, curr) => {
 		let day = dayjs(curr.date).format('D');
 		let entriesPerDay = [];
@@ -38,9 +42,11 @@
 	<header class="card-header mb-4" style:color={monthColour.luminance(0.9)}>
 		<h2>{month.format('MMM YYYY')}</h2>
 		<p class="mb-4 text-2xl" style:color={monthColour.luminance(0.9)}>
+      {#if (thisMonthEntries.length)}
 			{month.format('MMMM')}{#if dayjs().isSame(month, 'month')}'s been{:else} was{/if}
 			{#if /[aeiouy]/.test(monthColourName.name.toLowerCase()[0])}an{:else}a{/if}
 			{monthColourName.name.toLowerCase()} kind of month.
+      {/if}
 		</p>
 	</header>
 	<div style="background-color: #ffffff88" class="flex flex-wrap p-2 flex gap-1 rounded mb-4">
