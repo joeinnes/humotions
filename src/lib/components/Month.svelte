@@ -9,7 +9,11 @@
 	const endOfMonth = dayjs().endOf('month');
 	let monthColourName;
   let monthColour;
-	let thisMonthEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'month'));
+	let thisMonthEntries;
+	let dailyColours;
+	
+	$: {
+		thisMonthEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'month'));
 	if (thisMonthEntries.length) {
 		monthColour = getColourFromEntryList(thisMonthEntries);
 		monthColourName = ntc.name(monthColour.hex());
@@ -17,7 +21,7 @@
     monthColour = chroma('#ffffff');
 		monthColourName = ntc.name(monthColour.hex());
   }
-	const dailyColours = thisMonthEntries.reduce((acc, curr) => {
+	 dailyColours = thisMonthEntries.reduce((acc, curr) => {
 		let day = dayjs(curr.date).format('D');
 		let entriesPerDay = [];
 		if (acc[day]) {
@@ -27,6 +31,7 @@
 		}
 		return { ...acc, [day]: entriesPerDay };
 	}, {});
+	}
 	const daysInMonth = [
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
 		27, 28, 29, 30, 31

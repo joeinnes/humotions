@@ -4,6 +4,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { page } from '$app/stores'
 	import { goto } from '$app/navigation';
 
 	import { AppShell, Toast } from '@skeletonlabs/skeleton';
@@ -62,7 +63,9 @@
 		}
 	});
 </script>
-
+<svelte:head>
+	<title>Huemotions</title>
+</svelte:head>
 <AppShell>
 	<div
 		class="transition-colors min-h-screen text-lg flex max-w-screen flex-col justify-center items-center"
