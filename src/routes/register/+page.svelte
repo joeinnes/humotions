@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { Avatar, FileButton, toastStore } from '@skeletonlabs/skeleton';
 
 	import { pb } from '$lib/db/db';
 	import { pageBgColour } from '$lib/stores/colour';
@@ -11,6 +11,9 @@
 	let username = '';
 	let error = {};
 	let loggingIn = false;
+  let image;
+	let showImage;
+	let avatar;
 
 	if (pb.authStore.isValid) {
 		goto('/');
@@ -37,7 +40,16 @@
 				emailVisibility: true
 			};
 
-			const record = await pb.collection('users').create(data);
+      let formData = new FormData();
+
+      for (let key in data) {
+					formData.append(key, data[key]);
+				}
+        if (avatar) {
+				formData.append('avatar', avatar[0]);
+        }
+
+			const record = await pb.collection('users').create(formData);
 
 			const authData = await pb.collection('users').authWithPassword(email, password);
 			window.location.href = '/';
@@ -51,6 +63,23 @@
 			});
 		}
 	};
+
+  	const avatarChange = () => {
+		const file = avatar[0];
+
+		if (file) {
+			showImage = true;
+
+			const reader = new FileReader();
+			reader.addEventListener('load', function () {
+				image = reader.result;
+			});
+			reader.readAsDataURL(file);
+
+			return;
+		}
+		showImage = false;
+	};
 </script>
 
 <form
@@ -59,7 +88,28 @@
 >
 	<img src="/logo.svg" />
 	<h1 class="text-2xl mb-2 font-bold">Register</h1>
-	<label class="block mb-4">
+
+  {#if showImage}
+		<Avatar src={image} alt="Avatar for {name}" border="border-4" width="w-36" />
+	{:else}
+		<Avatar
+			initials={name.substring(0, 2)}
+			alt="Avatar for {name}"
+			border="border-4"
+			width="w-36"
+		/>
+	{/if}
+
+	<FileButton
+		accept="image/png, image/jpeg"
+		bind:files={avatar}
+		on:change={avatarChange}
+		id="avatar"
+		name="avatar"
+		type="file">Upload Avatar</FileButton
+	>
+
+	<label class="block my-4">
 		<span>Email</span>
 		<input
 			type="text"
@@ -114,7 +164,7 @@
 			placeholder="iH8Heffalumpz!"
 			required
 		/>
-		{#if error.password}{error.password.message}{/if}
+		{#if error.passwordConfirm}{error.passwordConfirm.message}{/if}
 	</label>
 
 	<button

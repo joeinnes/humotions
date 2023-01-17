@@ -189,7 +189,7 @@
 
 <div class="w-full lg:hidden">
 	{#each innerEmotions as coreEmotion}
-	{@const coreEmotionHue = getHue(coreEmotion)}
+		{@const coreEmotionHue = getHue(coreEmotion)}
 		<details
 			style="background-color: hsl({coreEmotionHue} 80% 70%); color: hsl({coreEmotionHue} 80% 10%)"
 			class="rounded px-2 py-2 mb-2 cursor-pointer"

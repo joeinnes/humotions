@@ -22,6 +22,9 @@
 			} else {
 				if (!$user) {
 					$user = await pb.collection('users').getOne(pb.authStore.model.id);
+					pb.collection('users').subscribe(pb.authStore.model.id, async (e) => {
+						$user = e.record;
+					});
 				}
 				$entries = await pb.collection('entries').getFullList(200, {
 					sort: '-created',
