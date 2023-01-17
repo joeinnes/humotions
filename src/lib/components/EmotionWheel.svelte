@@ -198,6 +198,7 @@
 			<div
 				style="background-color: hsl({coreEmotionHue} 80% 90%); color: hsl({coreEmotionHue} 80% 10%)"
 				class="rounded px-2 py-2 mb-2 cursor-pointer mt-2"
+				on:click={() => clickHandler(coreEmotion)}
 			>
 				{coreEmotion.name}
 			</div>
@@ -207,6 +208,7 @@
 						<div
 							style="background-color: hsl({coreEmotionHue} 80% 90%); color: hsl({coreEmotionHue} 80% 10%)"
 							class="rounded px-2 py-2"
+							on:click={() => clickHandler(mEm)}
 						>
 							{mEm.name}
 						</div>
@@ -217,6 +219,7 @@
 						<div
 							style="background-color: hsl({coreEmotionHue} 80% 90%); color: hsl({coreEmotionHue} 80% 10%)"
 							class="rounded px-2 py-2"
+							on:click={() => clickHandler(oEm)}
 						>
 							{oEm.name}
 						</div>
