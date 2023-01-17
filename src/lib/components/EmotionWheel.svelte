@@ -107,7 +107,6 @@
 							font: {
 								size: '18vw',
 								lineHeight: 0.8,
-								weight: 900,
 								family: `'Swanky And Moo Moo', 'Avenir Next', 'Avenir', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`
 							}
 						}
@@ -177,6 +176,8 @@
 	}
 
 	onMount(() => {
+		// Don't bother loading the canvas if it's not visible
+		if (!ctx.height) return;
 		const chart = new Chart(ctx, {
 			...config,
 			data: data
@@ -184,4 +185,44 @@
 	});
 </script>
 
-<div style="width: 100%; aspect-ratio: 1/1"><canvas bind:this={ctx} /></div>
+<div class="w-full aspect-square hidden lg:block"><canvas bind:this={ctx} /></div>
+
+<div class="w-full lg:hidden">
+	{#each innerEmotions as coreEmotion}
+	{@const coreEmotionHue = getHue(coreEmotion)}
+		<details
+			style="background-color: hsl({coreEmotionHue} 80% 70%); color: hsl({coreEmotionHue} 80% 10%)"
+			class="rounded px-2 py-2 mb-2 cursor-pointer"
+		>
+			<summary>{coreEmotion.name}</summary>
+			<div
+				style="background-color: hsl({coreEmotionHue} 80% 90%); color: hsl({coreEmotionHue} 80% 10%)"
+				class="rounded px-2 py-2 mb-2 cursor-pointer mt-2"
+			>
+				{coreEmotion.name}
+			</div>
+			<div class="grid grid-cols-2 gap-2">
+				{#each midEmotions as mEm}
+					{#if mEm.parent_emotion === coreEmotion.id}
+						<div
+							style="background-color: hsl({coreEmotionHue} 80% 90%); color: hsl({coreEmotionHue} 80% 10%)"
+							class="rounded px-2 py-2"
+						>
+							{mEm.name}
+						</div>
+					{/if}
+				{/each}
+				{#each outerEmotions as oEm}
+					{#if oEm.expand.parent_emotion.parent_emotion === coreEmotion.id}
+						<div
+							style="background-color: hsl({coreEmotionHue} 80% 90%); color: hsl({coreEmotionHue} 80% 10%)"
+							class="rounded px-2 py-2"
+						>
+							{oEm.name}
+						</div>
+					{/if}
+				{/each}
+			</div>
+		</details>
+	{/each}
+</div>

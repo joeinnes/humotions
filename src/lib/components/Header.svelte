@@ -12,9 +12,9 @@
 	let hueList = [];
 	let showMenu = false;
 	onMount(async () => {
-    if ($user.avatar) {
-		  avatar = await pb.getFileUrl($user, $user.avatar, { thumb: '100x250' });
-    }
+		if ($user.avatar) {
+			avatar = await pb.getFileUrl($user, $user.avatar, { thumb: '100x250' });
+		}
 		if (!$entries.length) {
 			$entries = await pb.collection('entries').getFullList(200, {
 				sort: '-created',
@@ -38,7 +38,7 @@
 <Drawer width="w-5/6 md:w-1/2">
 	<nav class="list-nav h-full p-4">
 		<ul class="flex flex-col h-full gap-2">
-      <img src="/logo.svg" class="w-full" />
+			<img src="/logo.svg" class="w-full" />
 			<li><a href="/" on:click={drawerStore.close}>Home</a></li>
 			<li><a href="/entries" on:click={drawerStore.close}>Entries</a></li>
 			<li><a href="/about" on:click={drawerStore.close}>About</a></li>
@@ -65,12 +65,13 @@
 			</li>
 			<div class="flex-1" />
 			<li>
-				<a href="/"
+				<a
+					href="/"
 					rel="external"
 					on:click={() => {
 						pb.authStore.clear();
 						drawerStore.close();
-            $user = null;
+						$user = null;
 						goto('/');
 					}}
 					class="btn btn-filled-error"
@@ -129,11 +130,16 @@
 		</button>
 	</div>
 	<div class="relative">
-    {#if avatar}
-		<Avatar src={avatar} alt="Avatar for {$user.name}" border="border-4" width="w-36" />
-    {:else}
-    <Avatar initials={$user.name ? $user.name.substring(0,2) : $user.username.substring(0,2)} alt="Avatar for {$user.name}" border="border-4" width="w-36" />
-    {/if}
+		{#if avatar}
+			<Avatar src={avatar} alt="Avatar for {$user.name}" border="border-4" width="w-36" />
+		{:else}
+			<Avatar
+				initials={$user.name ? $user.name.substring(0, 2) : $user.username.substring(0, 2)}
+				alt="Avatar for {$user.name}"
+				border="border-4"
+				width="w-36"
+			/>
+		{/if}
 	</div>
 </header>
 

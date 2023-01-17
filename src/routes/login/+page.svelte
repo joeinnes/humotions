@@ -9,19 +9,23 @@
 	let error = '';
 	let loggingIn = false;
 
+	if (pb.authStore.isValid) {
+		goto('/');
+	}
+
 	const submitHandler = async () => {
 		if (loggingIn) return;
 		try {
 			loggingIn = true;
 			const authData = await pb.collection('users').authWithPassword(email, password);
-			window.location.href = '/'
+			window.location.href = '/';
 		} catch (e) {
 			loggingIn = false;
 			toastStore.trigger({
-			message: 'Authentication failed',
-			preset: 'error',
-			duration: '5000'
-		});
+				message: 'Authentication failed',
+				preset: 'error',
+				duration: '5000'
+			});
 		}
 	};
 </script>
@@ -30,7 +34,7 @@
 	on:submit|preventDefault={submitHandler}
 	class="shadow-lg p-8 max-w-prose w-full bg-white rounded-xl mx-auto mt-8"
 >
-  <img src="/logo.svg" />
+	<img src="/logo.svg" />
 	<h1 class="text-2xl mb-2 font-bold">Log In</h1>
 	<label class="block mb-4">
 		<span>Email or username</span>
@@ -45,7 +49,7 @@
 	<button
 		type="submit"
 		class="bg-green-400 text-green-900 hover:bg-green-600 hover:text-green-200 transition-colors px-2 py-1 rounded"
-		disabled={loggingIn}
-		>Log In</button
+		disabled={loggingIn}>Log In</button
 	>
+	<a href="/register" class="pl-2">Register</a>
 </form>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-  import chroma from 'chroma-js';
+	import chroma from 'chroma-js';
 	import { ntc } from '@cosmicice/namethatcolor';
 	import { entries } from '$lib/stores/data';
 	import { getColourFromEntryList, getEntryColour, setBackgroundGradient } from '$lib/utils/utils';
@@ -8,29 +8,29 @@
 	export let month = dayjs().startOf('month');
 	const endOfMonth = dayjs().endOf('month');
 	let monthColourName;
-  let monthColour;
+	let monthColour;
 	let thisMonthEntries;
 	let dailyColours;
-	
+
 	$: {
 		thisMonthEntries = $entries.filter((entry) => dayjs(entry.date).isSame(dayjs(), 'month'));
-	if (thisMonthEntries.length) {
-		monthColour = getColourFromEntryList(thisMonthEntries);
-		monthColourName = ntc.name(monthColour.hex());
-	} else {
-    monthColour = chroma('#ffffff');
-		monthColourName = ntc.name(monthColour.hex());
-  }
-	 dailyColours = thisMonthEntries.reduce((acc, curr) => {
-		let day = dayjs(curr.date).format('D');
-		let entriesPerDay = [];
-		if (acc[day]) {
-			entriesPerDay = [...acc[day], curr];
+		if (thisMonthEntries.length) {
+			monthColour = getColourFromEntryList(thisMonthEntries);
+			monthColourName = ntc.name(monthColour.hex());
 		} else {
-			entriesPerDay = [curr];
+			monthColour = chroma('#ffffff');
+			monthColourName = ntc.name(monthColour.hex());
 		}
-		return { ...acc, [day]: entriesPerDay };
-	}, {});
+		dailyColours = thisMonthEntries.reduce((acc, curr) => {
+			let day = dayjs(curr.date).format('D');
+			let entriesPerDay = [];
+			if (acc[day]) {
+				entriesPerDay = [...acc[day], curr];
+			} else {
+				entriesPerDay = [curr];
+			}
+			return { ...acc, [day]: entriesPerDay };
+		}, {});
 	}
 	const daysInMonth = [
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
@@ -47,11 +47,11 @@
 	<header class="card-header mb-4" style:color={monthColour.luminance(0.9)}>
 		<h2>{month.format('MMM YYYY')}</h2>
 		<p class="mb-4 text-2xl" style:color={monthColour.luminance(0.9)}>
-      {#if (thisMonthEntries.length)}
-			{month.format('MMMM')}{#if dayjs().isSame(month, 'month')}'s been{:else} was{/if}
-			{#if /[aeiouy]/.test(monthColourName.name.toLowerCase()[0])}an{:else}a{/if}
-			{monthColourName.name.toLowerCase()} kind of month.
-      {/if}
+			{#if thisMonthEntries.length}
+				{month.format('MMMM')}{#if dayjs().isSame(month, 'month')}'s been{:else} was{/if}
+				{#if /[aeiouy]/.test(monthColourName.name.toLowerCase()[0])}an{:else}a{/if}
+				{monthColourName.name.toLowerCase()} kind of month.
+			{/if}
 		</p>
 	</header>
 	<div style="background-color: #ffffff88" class="flex flex-wrap p-2 flex gap-1 rounded mb-4">

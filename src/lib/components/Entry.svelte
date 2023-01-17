@@ -18,18 +18,29 @@
 		)} 100%); color: {entryColour.luminance(0.02)}"
 	>
 		<header class="card-header pt-0 pl-0 relative">
-    {#if del}<button class="absolute transition-colors hover:text-[#ffffff88] top-2 right-2 w-6 h-6" on:click={() => del(entry)}
-						><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-</svg>
-</button
-					>{/if}
+			{#if del}<button
+					class="absolute transition-colors hover:text-[#ffffff88] top-2 right-2 w-6 h-6"
+					on:click={() => del(entry)}
+					><svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-6 h-6"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+						/>
+					</svg>
+				</button>{/if}
 			<h2>{dayjs(entry.date).format('dddd DD MMMM YYYY')}</h2>
 			<small
 				>{dayjs(entry.date).format('HH:mm')}
 				{#if edit}Edit{/if}
-				</small
-			>
+			</small>
 		</header>
 		<div class="py-2">{entry.notes}</div>
 		<div class="flex flex-wrap gap-2">
