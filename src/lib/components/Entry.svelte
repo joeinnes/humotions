@@ -2,6 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import dayjs from 'dayjs';
 	import { getEntryColour, getHue, setBackgroundGradient } from '$lib/utils/utils';
+	import { pb } from '$lib/db/db';
 	export let entry;
 	export let del;
 	export let edit;
@@ -85,6 +86,14 @@
 			</small>
 		</header>
 		<div class="py-2">{entry.notes}</div>
+		{#if entry.attachments}
+			<div class="grid grid-cols-3 pb-4">
+			{#each entry.attachments as attachment}
+			{@const img = pb.getFileUrl(entry, attachment)}
+				<a href={img} target="_blank"><img src={img} class="rounded-xl shadow aspect-video object-cover" /></a>
+			{/each}
+			</div>
+		{/if}
 		<div class="flex flex-wrap gap-2">
 			{#each entry.expand.emotions as emotion}
 				<span
