@@ -8,6 +8,7 @@
 	import { toastStore } from '@skeletonlabs/skeleton';
 	import Entry from '$lib/components/Entry.svelte';
 
+	let theseEntries = [];
 	const deleteEntry = async (entry) => {
 		try {
 			const timer = setTimeout(() => {
@@ -31,11 +32,24 @@
 			console.error(e);
 		}
 	};
+	onMount(() => {
+		const params = (new URL(document.location)).searchParams;
+		const start = params.get('start');
+		const end = params.get('end');
+		let tempEntries = [...$entries]
+		if (start) {
+			tempEntries = tempEntries.filter(el => dayjs(el.created).isAfter(dayjs(start)));
+		}
+		if (end) {
+			tempEntries = tempEntries.filter(el => dayjs(el.created).isBefore(dayjs(end)));
+		}
+		theseEntries = tempEntries;
+	});
 </script>
 
 <section class="flex flex-col gap-2">
-	{#if $entries.length}
-		{#each $entries as entry (entry.id)}
+	{#if theseEntries.length}
+		{#each theseEntries as entry (entry.id)}
 			<Entry {entry} del={deleteEntry} />
 		{/each}
 	{:else}

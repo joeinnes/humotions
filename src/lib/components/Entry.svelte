@@ -19,7 +19,7 @@
 		)} 100%); color: {entryColour.luminance(0.02)}"
 	>
 		<header class="card-header pt-0 pl-0 relative">
-			<div class="absolute top-2 right-2 flex gap-2">
+			<div class="float-right flex gap-2 -mr-4 pt-2">
 				<svg
 					class="w-6 h-6"
 					viewBox="0 0 24 24"
