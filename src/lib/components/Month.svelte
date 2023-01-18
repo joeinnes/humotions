@@ -45,7 +45,7 @@
 
 <section class="card p-4" use:setBackgroundGradient={monthColour}>
 	<header class="card-header mb-4" style:color={monthColour.luminance(0.9)}>
-		<h2>{month.format('MMM YYYY')}</h2>
+		<h2><a href="/entries?start={month.year()}-{month.month() + 1}-01T00:00&end={month.year()}-{month.month() + 1}-{endOfMonth.date()}T24:00" class="unstyled cursor-pointer">{month.format('MMM YYYY')}</a></h2>
 		<p class="mb-4 text-2xl" style:color={monthColour.luminance(0.9)}>
 			{#if thisMonthEntries.length}
 				{month.format('MMMM')}{#if dayjs().isSame(month, 'month')}'s been{:else} was{/if}
@@ -56,14 +56,15 @@
 	</header>
 	<div style="background-color: #ffffff88" class="flex flex-wrap p-2 flex gap-1 rounded mb-4">
 		{#each daysInMonth as dayInMonth}
-			<div
+			<a
+				href="/entries?start={month.year()}-{month.month() + 1}-{dayInMonth}T00:00&end={month.year()}-{month.month() + 1}-{dayInMonth}T24:00"
 				style="background-color: {getColourFromEntryList(
 					dailyColours[dayInMonth]
 				)}; color: {dailyColours[dayInMonth] ? '#ffffffcc' : monthColour.luminance(0.02)}"
 				class="w-10 aspect-square rounded flex justify-center items-center border-token btn font-bold"
 			>
 				<span>{dayInMonth}</span>
-			</div>
+			</a>
 		{/each}
 	</div>
 	<footer class="card-footer">
