@@ -1,6 +1,3 @@
-const salt = 'saltsalt';
-const password = 'password';
-
 async function getKeyMaterial(password) {
 	const enc = new TextEncoder();
 	const km = await window.crypto.subtle.importKey(

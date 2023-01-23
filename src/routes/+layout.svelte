@@ -30,14 +30,18 @@
 				if (!$user.key) {
 					$user = await pb.collection('users').getOne(pb.authStore.model.id);
 					if (!$user.key) {
-						const key = await generateAndWrapKey();
+						const pw = prompt('Enter a decryption password');
+						const key = await generateAndWrapKey($user.id,pw);
 						await pb.collection('users').update($user.id, {
 							key
 						});
 						$user.key = key;
 					}
 				}
-				$key = await unwrapSecretKey($user.key);
+				if (!$key) {
+					const pw = prompt('Enter a decryption password');
+					$key = await unwrapSecretKey($user.key, $user.id, pw);
+				}
 				$entries = await pb.collection('entries').getFullList(200, {
 					sort: '-created',
 					expand: 'emotions,emotions.parent_emotion,emotions.parent_emotion.parent_emotion'

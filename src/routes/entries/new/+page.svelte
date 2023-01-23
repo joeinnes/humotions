@@ -2,9 +2,11 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import chroma from 'chroma-js';
 	import { toastStore } from '@skeletonlabs/skeleton';
-	import { entries, emotions } from '$lib/stores/data';
+	import { entries, emotions, key } from '$lib/stores/data';
 	import { getHue } from '$lib/utils/utils';
+		import EmotionWheel from '$lib/components/EmotionWheel.svelte';
 	import { pb } from '$lib/db/db';
+	import { encrypt } from '$lib/utils/crypto';
 
 	let selectedEmotions = [];
 	let notes = '';
@@ -25,6 +27,11 @@
 			created_by: pb.authStore.model.id,
 			emotions: selectedEmotions.map((el) => el.id)
 		};
+		if ($key) {
+			const encrypted = await encrypt(notes, $key)
+			data.notes = encrypted.encryptedMessage;
+			data.iv = encrypted.iv;
+		}
 		const record = await pb.collection('entries').create(data);
 		toastStore.trigger({
 			message: 'Entry created',
@@ -44,8 +51,6 @@
 
 	let gradient;
 	let averageColour;
-
-	import EmotionWheel from '$lib/components/EmotionWheel.svelte';
 
 	$: {
 		if (selectedEmotions.length) {
