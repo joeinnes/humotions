@@ -2,7 +2,6 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import chroma from 'chroma-js';
 	import { toastStore } from '@skeletonlabs/skeleton';
-
 	import { entries, emotions } from '$lib/stores/data';
 	import { getHue } from '$lib/utils/utils';
 	import { pb } from '$lib/db/db';

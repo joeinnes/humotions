@@ -1,5 +1,4 @@
 import { writable } from 'svelte/store';
-import { pb } from '$lib/db/db';
 
 interface User {
 	id: string;
@@ -34,3 +33,4 @@ interface Emotion {
 export const entries = writable<Entry[]>([]);
 export const user = writable<User>();
 export const emotions = writable<Emotion[]>([]);
+export const key = writable<String>();

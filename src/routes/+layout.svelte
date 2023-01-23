@@ -11,8 +11,9 @@
 
 	import dayjs from 'dayjs';
 	import { pb } from '$lib/db/db';
+	import { generateAndWrapKey, unwrapSecretKey } from '$lib/utils/crypto';
 	import { pageBgColour } from '$lib/stores/colour';
-	import { user, entries } from '$lib/stores/data';
+	import { user, entries, key } from '$lib/stores/data';
 	import Header from '$lib/components/Header.svelte';
 	let loading = true;
 	onMount(async () => {
@@ -26,6 +27,17 @@
 						$user = e.record;
 					});
 				}
+				if (!$user.key) {
+					$user = await pb.collection('users').getOne(pb.authStore.model.id);
+					if (!$user.key) {
+						const key = await generateAndWrapKey();
+						await pb.collection('users').update($user.id, {
+							key
+						});
+						$user.key = key;
+					}
+				}
+				$key = await unwrapSecretKey($user.key);
 				$entries = await pb.collection('entries').getFullList(200, {
 					sort: '-created',
 					expand: 'emotions,emotions.parent_emotion,emotions.parent_emotion.parent_emotion'
