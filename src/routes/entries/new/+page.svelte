@@ -11,6 +11,7 @@
 	let selectedEmotions = [];
 	let notes = '';
 	let clW = 0;
+	let encryptThis = false;
 	if (!$emotions.length) {
 		pb.collection('emotions')
 			.getFullList(200 /* batch size */, {
@@ -27,7 +28,7 @@
 			created_by: pb.authStore.model.id,
 			emotions: selectedEmotions.map((el) => el.id)
 		};
-		if ($key) {
+		if ($key && PUBLIC_ENCRYPTION === 'default' || $user.prefers_encryption || encryptThis) {
 			const encrypted = await encrypt(notes, $key)
 			data.notes = encrypted.encryptedMessage;
 			data.iv = encrypted.iv;

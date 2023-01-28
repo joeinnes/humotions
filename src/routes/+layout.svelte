@@ -2,6 +2,7 @@
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.css';
+	import { PUBLIC_ENCRYPTION } from '$env/static/public'
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
@@ -27,7 +28,7 @@
 						$user = e.record;
 					});
 				}
-				if (!$user.key) {
+				if (!$user.key && PUBLIC_ENCRYPTION === 'default') {
 					$user = await pb.collection('users').getOne(pb.authStore.model.id);
 					if (!$user.key) {
 						const pw = prompt('Enter a decryption password');
@@ -38,7 +39,7 @@
 						$user.key = key;
 					}
 				}
-				if (!$key) {
+				if (!$key && PUBLIC_ENCRYPTION === 'default') {
 					const pw = prompt('Enter a decryption password');
 					$key = await unwrapSecretKey($user.key, $user.id, pw);
 				}
