@@ -3,8 +3,8 @@
 	import dayjs from 'dayjs';
 	import { getEntryColour, getHue, setBackgroundGradient } from '$lib/utils/utils';
 	import { pb } from '$lib/db/db';
-	import { decrypt } from '$lib/utils/crypto';
-	import { key } from '$lib/stores/data';
+	import { decrypt, unwrapSecretKey } from '$lib/utils/crypto';
+	import { key, user } from '$lib/stores/data';
 	export let entry;
 	export let del;
 	export let edit;
@@ -15,14 +15,15 @@
 		decrypt($key, entry.notes, entry.iv).then(val => decrypted = val).catch(e => failed = true);
 	}
 
-	const decryptThis = () => {
+	const decryptThis = async () => {
 		if (!entry.iv) {
 			console.log('Not encrypted!');
 			return;
 		}
-		if ($key) {
-			console.log('No key!');
-			return;
+		if (!$key) {
+			const pw = prompt('Enter a decryption password');
+			$key = await unwrapSecretKey($user.key, $user.id, pw);
+
 		}
 		decrypt($key, entry.notes, entry.iv).then(val => decrypted = val).catch(e => failed = true);
 	}
