@@ -11,10 +11,10 @@
 
 <div class="flex flex-col gap-2 mb-4">
 {#each records as record}
-  <a class="btn btn-filled-secondary" href={record.link} target="_blank" rel="external noreferrer">{record.name}</a>
+  <a class="btn variant-filled-secondary" href={record.link} target="_blank" rel="external noreferrer">{record.name}</a>
 {/each}
 </div>
 
-<!--<button class="btn btn-filled-primary"><span>&plus;</span>
+<!--<button class="btn variant-filled-primary"><span>&plus;</span>
   <span>Add new reward</span>
 </button>-->

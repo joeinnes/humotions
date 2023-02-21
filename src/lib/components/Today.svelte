@@ -36,7 +36,7 @@
 		<footer class="card-footer">
 			<a
 				href="/entries/new"
-				class="btn btn-filled-primary btn-base"
+				class="btn variant-filled-primary btn-base"
 				style="background-color: {todaysColour.darken()}; color: {todaysColour.brighten(4)}"
 				><span
 					><svg
@@ -57,7 +57,7 @@
 	<section class="card card-glass-surface p-4">
 		<header class="card-header">Today's a blank slate</header>
 		<footer class="card-footer">
-			<a href="/entries/new" class="btn btn-filled-primary btn-base"
+			<a href="/entries/new" class="btn variant-filled-primary btn-base"
 				><span>+</span><span>Add a new entry</span></a
 			>
 		</footer>

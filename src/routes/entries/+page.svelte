@@ -56,7 +56,7 @@
 		<div class="card card-surface-50 p-4">
 			<header class="card-header mb-4">No entries.</header>
 			<footer class="card-footer">
-				<a href="/entries/new" class="btn btn-filled-primary btn-base"
+				<a href="/entries/new" class="btn variant-filled-primary btn-base"
 					><span>+</span><span>Add a new entry</span></a
 				>
 			</footer>
