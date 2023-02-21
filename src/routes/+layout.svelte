@@ -2,6 +2,7 @@
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.css';
+	
 	import { PUBLIC_ENCRYPTION } from '$env/static/public'
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
